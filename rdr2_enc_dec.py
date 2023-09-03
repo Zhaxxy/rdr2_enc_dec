@@ -31,13 +31,13 @@ def _crypt_rdr2_ps4_save(rdr2_save: BytesIO,/,*,enc_data_offset: int,do_enc: boo
             rdr2_save.seek(enc_data_offset + chunk + 4,0) # 4 bytes for the magic CHKS
             header_size = struct.unpack('>I',rdr2_save.read(4))[0]
             data_length = struct.unpack('>I',rdr2_save.read(4))[0]
-            rdr2_save.seek(header_size - 4 - 4 - 4,1) # 4 for the header size num, 4 for the data length num AND 4 for the checksum
+            rdr2_save.seek(header_size - 4 - 4 - 4,1) # 4 for the header size num, 4 for the data length num and 4 for the checksum
 
             rdr2_save.seek(-data_length,1)
             data_to_be_hashed = bytearray(rdr2_save.read(data_length))
 
             chks_offset = len(data_to_be_hashed)-header_size + 4 + 4
-            data_to_be_hashed[chks_offset:chks_offset + 8] = b'\x00' * 8 # remove the length and hash
+            data_to_be_hashed[chks_offset:chks_offset + 4 + 4] = b'\x00' * 4 + 4 # remove the length and hash
             new_hash = rdr2_checksum(data_to_be_hashed)
             
             rdr2_save.seek(enc_data_offset + chunk + 12,0)
