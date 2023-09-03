@@ -2,11 +2,11 @@
 Simple tool to encrypt and decrypt ps4 saves for Red Dead Redemption 2 and GTAV, detects if its encrypted or decrypted automatically
 
 # Usage
-you first need to install pycryptodome
+## You first need to install pycryptodome
 ```
 pip install pycryptodome
 ```
-
+## Script usage
 ```
 usage: rdr2_enc_dec.py [-h] input_save output_save
 
@@ -21,11 +21,11 @@ options:
 ```
 
 # Example
-Decrypt save
+## Decrypt save
 ```
 python rdr2_enc_dec.py memory.dat output.bin
 ```
-Encrypt save, fixing the checksums too
+## Encrypt save, fixing the checksums too
 ```
 python rdr2_enc_dec.py output.bin memory.dat
 ```
