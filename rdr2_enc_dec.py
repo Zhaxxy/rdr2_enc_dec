@@ -16,7 +16,7 @@ def rdr2_checksum(data: bytes, /) -> bytes:
         checksum = (checksum >> 6 ^ checksum) & 0xFFFFFFFF
     checksum = (checksum*9) & 0xFFFFFFFF
     
-    return struct.pack('>I',((checksum >> 11 ^ checksum) * 0x8001) & 0xFFFFFFFF)
+    return ((checksum >> 11 ^ checksum) * 0x8001) & 0xFFFFFFFF
 
 def _crypt_rdr2_ps4_save(rdr2_save: BytesIO,/,*,enc_data_offset: int,do_enc: bool = True) -> bytes:
     previous_spot = rdr2_save.tell()
@@ -38,7 +38,7 @@ def _crypt_rdr2_ps4_save(rdr2_save: BytesIO,/,*,enc_data_offset: int,do_enc: boo
 
             chks_offset = len(data_to_be_hashed)-header_size + (4 + 4)
             data_to_be_hashed[chks_offset:chks_offset + (4 + 4)] = b'\x00' * (4 + 4) # remove the length and hash
-            new_hash = rdr2_checksum(data_to_be_hashed)
+            new_hash = struct.pack('>I',(data_to_be_hashed))
             
             rdr2_save.seek(enc_data_offset + chunk + (4 + 4 + 4),0) # 4 bytes for header size num, 4 bytes for the data length and 4 bytes for the checksum
             rdr2_save.write(new_hash)
