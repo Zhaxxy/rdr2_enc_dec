@@ -7,7 +7,7 @@ from Crypto.Cipher import AES
 
 GTA5_AND_REDDEAD_KEY = AES.new(b'\x16\x85\xff\xa3\x8d\x01\x0f\r\xfef\x1c\xf9\xb5W,P\r\x80&H\xdb7\xb9\xed\x0fH\xc5sB\xc0"\xf5', AES.MODE_ECB)
 
-def rdr2_checksum(data: bytes, /) -> bytes:
+def rdr2_checksum(data: bytes, /) -> int:
     checksum = 0x3fac7125
 
     for char in data:
