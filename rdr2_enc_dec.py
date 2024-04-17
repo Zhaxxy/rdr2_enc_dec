@@ -38,7 +38,7 @@ def _crypt_rdr2_ps4_save(rdr2_save: BytesIO,/,*,enc_data_offset: int,do_enc: boo
 
             chks_offset = len(data_to_be_hashed)-header_size + (4 + 4)
             data_to_be_hashed[chks_offset:chks_offset + (4 + 4)] = b'\x00' * (4 + 4) # remove the length and hash
-            new_hash = struct.pack('>I',(data_to_be_hashed))
+            new_hash = struct.pack('>I',rdr2_checksum(data_to_be_hashed))
             
             rdr2_save.seek(enc_data_offset + chunk + (4 + 4 + 4),0) # 4 bytes for header size num, 4 bytes for the data length and 4 bytes for the checksum
             rdr2_save.write(new_hash)
